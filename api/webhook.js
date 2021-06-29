@@ -1,3 +1,5 @@
+
+
 const https = require('https');
 const crypto = require('crypto');
 
@@ -78,9 +80,6 @@ module.exports = async (req, res) => {
 		return res.status(500).send('missing env variable: RECRUITEE_COMPANY_DOMAIN');
 	}
 
-	//only POST requests are allowed
-	if(req.method != 'POST') return res.status(405).send('');
-
 	//decode query string
 	if(!('pipeline' in req.query) || req.query.pipeline === '') {
 		return res.status(400).send('missing query parameter: pipeline');
@@ -90,6 +89,14 @@ module.exports = async (req, res) => {
 	}
 	if(!('schedules' in req.query) || req.query.schedules == '') {
 		return res.status(400).send('missing query parameter: schedules');
+	}
+
+	//only POST requests are allowed
+	if(req.method == 'GET') {
+		return res.status(405).send('all enviroment variables and query parameters are set!');
+	} 
+	else if(req.method != 'POST') {
+		return res.status(405).send('method not accepted');
 	}
 
 	//ensure req body is json & get raw body
