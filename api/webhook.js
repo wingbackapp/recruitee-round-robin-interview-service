@@ -81,7 +81,7 @@ module.exports = async (req, res) => {
 		return res.status(500).send('missing env variable: RECRUITEE_COMPANY_DOMAIN');
 	}
 
-	//decode query string
+	//check if query parameters are set
 	if(!('pipeline' in req.query) || req.query.pipeline === '') {
 		return res.status(400).send('missing query parameter: pipeline');
 	}
@@ -92,7 +92,7 @@ module.exports = async (req, res) => {
 		return res.status(400).send('missing query parameter: schedules');
 	}
 
-	//only POST requests are allowed
+	//only POST requests are allowed, but let users know that everything is OK
 	if(req.method == 'GET') {
 		return res.status(405).send('all enviroment variables and query parameters are set!');
 	} 
@@ -112,7 +112,7 @@ module.exports = async (req, res) => {
 		return res.status(200).send('test successful');
 	}
 
-	//check hmac signature to verify its recruitee
+	//check hmac signature to verify its correct
 	if(!('x-recruitee-signature' in req.headers) || req.headers['x-recruitee-signature'] == '') {
 		return res.status(400).send('missing header: X-Recruitee-Signature');
 	}
