@@ -98,6 +98,12 @@ module.exports = async (req, res) => {
 	}
 	req['raw_body'] = await vercel_getRawBody(req);
 
+	//recruitee webhook test
+	//has to be performed before signature check!
+	if('test' in req.body) {
+		return res.status(200).send('test successful');
+	}
+
 	//check hmac signature to verify its recruitee
 	if(!('x-recruitee-signature' in req.headers) || req.headers['x-recruitee-signature'] == '') {
 		return res.status(400).send('missing header: X-Recruitee-Signature');
@@ -107,12 +113,7 @@ module.exports = async (req, res) => {
 	let digest = hmac.digest('hex');
 	//console.log("digest",digest);
 	if(digest != req.headers['x-recruitee-signature']) {
-		return res.status(400).send('hmac signature is invalud');
-	}
-
-	//recruitee webhook test
-	if('test' in req.body) {
-		return res.status(200).send('test successful');
+		return res.status(400).send('X-Recruitee-Signature hmac signature is invalid');
 	}
 
 	//check if candidate was moved to correct pipeline
@@ -172,7 +173,7 @@ module.exports = async (req, res) => {
 				],
 			cc: [],
 			bcc: [],
-			subject: rc_email_template.subject+" finally!",
+			subject: rc_email_template.subject,
 			bodyHtml: rc_email_template.body_html,
 			replyToMessageId: null,
 			attachments: [],
