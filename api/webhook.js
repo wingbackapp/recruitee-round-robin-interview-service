@@ -1,4 +1,5 @@
-
+/// This file is licensed under the MIT license.
+/// Copyright (c) 2021 Yann Leretaille, Wingback Inc.
 
 const https = require('https');
 const crypto = require('crypto');
