@@ -2,6 +2,8 @@
 *Well, that's a mouthful.*
 ## Problem
 For certain interviews (like screening interviews), you would like to have one interviewer out of a pool randomly assigned to the candidate. However it is not possible to create Event Schedulers in Recruitee that support round robin scheduling. This means you cannot use pipeline automations and have to send out invites by hand trying to keep the ratio between interviewers even. This webhook solves this issue by randomly assigning an interviewer and sending out an invite with a link to their according Event Scheduler when you move a candidate to a certain stage in your pipeline. It can easily be deployed to a serverless platform like [Vercel](https://vercel.com).
+
+*Note: Due to the stateless nature of the service, the scheduler is not actually using round robin but randomly picking a new interviewer every time a new invite is sent out. That means that while over a long enough time period each interviewer will be assigned the same average amount over interviews, there might be a more uneven distribution of the numbers of interviews per interviewer week-to-week (especially if the total number of interviews is low).*
 ## Setup
 ### 1. Setup Recruitee
 1. Go to the [Recruitee API Dashboard](https://app.recruitee.com/#/settings/api_tokens) and create a new API token
